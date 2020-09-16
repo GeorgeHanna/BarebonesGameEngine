@@ -22,7 +22,6 @@
 		337D5FCC1D3BE61800A50F7A /* AnimationComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 337D5FCA1D3BE61800A50F7A /* AnimationComponent.cpp */; };
 		337D5FCF1D3BE75B00A50F7A /* Subject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 337D5FCD1D3BE75B00A50F7A /* Subject.cpp */; };
 		337D5FDD1D3CCFCA00A50F7A /* EntityLoaderOldEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 337D5FDB1D3CCFCA00A50F7A /* EntityLoaderOldEditor.cpp */; };
-		337D5FE11D3CFAFD00A50F7A /* PlayerComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 337D5FDF1D3CFAFD00A50F7A /* PlayerComponent.cpp */; };
 		337D5FE31D3D520800A50F7A /* ExportTest in Resources */ = {isa = PBXBuildFile; fileRef = 337D5FE21D3D520800A50F7A /* ExportTest */; };
 		33815A1D1CEFA937006F66E7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 33815A1C1CEFA937006F66E7 /* main.m */; };
 		33815A201CEFA937006F66E7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 33815A1F1CEFA937006F66E7 /* AppDelegate.m */; };
@@ -1393,6 +1392,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1460,7 +1460,6 @@
 				33E2C0991D202E5D00014ED8 /* BaseLightComponent.cpp in Sources */,
 				33357C731D85E9C00070FF34 /* SpriteSwingRenderComponent.cpp in Sources */,
 				33815BBF1CEFB964006F66E7 /* Camera.cpp in Sources */,
-				337D5FE11D3CFAFD00A50F7A /* PlayerComponent.cpp in Sources */,
 				33EB9C361CFB48B20098094E /* b2ContactSolver.cpp in Sources */,
 				33EF1D1E1D11C497004B6D0C /* PhysicsBody2DEdgeShapeComponent.cpp in Sources */,
 				33E2C0A21D21A0EB00014ED8 /* LightHandler.cpp in Sources */,
