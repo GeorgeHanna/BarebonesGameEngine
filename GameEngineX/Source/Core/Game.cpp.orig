@@ -1,0 +1,173 @@
+//
+//  Game.cpp
+//  GameEngineX
+//
+//  Created by George Hanna on 20/05/16.
+//  Copyright © 2016 George Hanna. All rights reserved.
+//
+
+#include "Game.hpp"
+
+namespace Game {
+    
+    Game::Game()
+    {
+        _maincamera = new Camera();
+        _maintimer = new Timer();
+    }
+    
+    void Game::Initialize()
+    {
+        
+        
+        TransformationMatrixStack::Initialize();
+        _maincamera->Initialize();
+        _maintimer->Initialize();
+
+        
+        PhysicsWorld2DComponent* physicsworld1 = new PhysicsWorld2DComponent();
+        physicsworld1->_gravity = b2Vec2(0.0f, -9.82f);
+        physicsworld1->_stepquality = 32;
+        Resources::AddPhysicsWorld("1", physicsworld1);
+        
+        //setup lights
+        DirectionalLightComponent* dirlight = new DirectionalLightComponent();
+        dirlight->_ambient = 0.7;
+        dirlight->_direction = glm::vec3(0.25, 0.25, 0.25);
+        dirlight->_color = {1,1,1};
+        PointLightComponent* plight = new PointLightComponent();
+        plight->_size = 100;
+        plight->_color = {1,1,1};
+        plight->_transformation._position.z = 2;
+        Resources::GetLightHandler()->SetDirectionalLight(dirlight);
+        Resources::GetLightHandler()->AddPointLight(plight);
+        
+        //_game.AddComponent(sprite1);
+        _game.AddComponent(_maincamera);
+        _game.AddComponent(physicsworld1);
+        _game.AddComponent(dirlight);
+        _game.Initialize();
+        
+
+        
+        
+        
+        Entity* childtest1 = new Entity();
+        //Sprite
+        AnimationComponent* sprite11 = new AnimationComponent();
+        sprite11->_texturename = "frog.png";
+        sprite11->_meshname = "testplane.obj";
+        sprite11->_nrframes = 12;
+        sprite11->_duration = 2;
+        sprite11->_framewidth = 284;
+        sprite11->_frameheight = 392;
+        sprite11->_offsetx = 0;
+        sprite11->_offsety = 0;
+        sprite11->_loop = true;
+        
+        //physics
+        PhysicsBody2DPolygonComponent* circle = new PhysicsBody2DPolygonComponent();
+        circle->_restitution = 0.1;
+        circle->_friction = 0.1;
+        circle->_density = 10;
+        for (auto it = Resources::AddMesh("testplane.obj")->Vertices().begin(); it != Resources::AddMesh("testplane.obj")->Vertices().end(); it++) {
+            circle->_vertices.push_back(b2Vec2(it->_position[0], it->_position[1]));
+            
+        }
+        //circle->_vertices = {b2Vec2(-0.5,-0.5), b2Vec2(0.5,-0.5), b2Vec2(0.5,0.5), b2Vec2(-0.5,0.5)};
+        circle->_bodytype = b2BodyType::b2_dynamicBody;
+        childtest1->AddComponent(circle);
+         
+        childtest1->AddComponent(sprite11);
+        childtest1->AddComponent(plight);
+        childtest1->_transformation._position = glm::vec3(0,0,0);
+        
+        
+        Entity* childtest2 = new Entity();
+        SpriteLightRenderComponent* sprite12 = new SpriteLightRenderComponent();
+        sprite12->_texturename = "rayman2.png";
+        sprite12->_meshname = "polygontest.obj";
+        //physics
+        PhysicsBody2DEdgeShapeComponent* edgeshape = new PhysicsBody2DEdgeShapeComponent();
+        edgeshape->_restitution = 0.1;
+        edgeshape->_friction = 0.1;
+        edgeshape->_density = 1;
+        for (auto it = Resources::AddMesh("polygontest.obj")->Vertices().begin(); it != Resources::AddMesh("polygontest.obj")->Vertices().end(); it++) {
+            edgeshape->_vertices.push_back(b2Vec2(it->_position[0], it->_position[1]));
+
+        }
+        edgeshape->_bodytype = b2BodyType::b2_staticBody;
+        childtest2->AddComponent(edgeshape);
+        childtest2->AddComponent(sprite12);
+        childtest2->_transformation._position = glm::vec3(0,0,-0.1);
+        //childtest2->_transformation._rotation = glm::rotate(childtest2->_transformation._rotation, 45.0f, glm::vec3(0,0,1));
+        _game.AddEntity(childtest2);
+        
+        
+        
+        Entity* layer1 = new Entity();
+        SpriteLightRenderComponent* sprite1 = new SpriteLightRenderComponent();
+        sprite1->_texturename = "l1.png";
+        sprite1->_meshname = "testplane.obj";
+        layer1->AddComponent(sprite1);
+        layer1->AddComponent(plight);
+        layer1->_transformation._position = glm::vec3(0,0,-0.1);
+        layer1->_transformation._scale = glm::vec3(7.8,3,1);
+
+        
+        Entity* layer2 = new Entity();
+        SpriteLightRenderComponent* sprite2 = new SpriteLightRenderComponent();
+        sprite2->_texturename = "l2.png";
+        sprite2->_meshname = "testplane.obj";
+        layer2->AddComponent(sprite2);
+        layer2->_transformation._position = glm::vec3(0,0,-0.5);
+        layer2->_transformation._scale = glm::vec3(7.8*4,3*4,1);
+        
+        Entity* layer3 = new Entity();
+        SpriteLightRenderComponent* sprite3 = new SpriteLightRenderComponent();
+        sprite3->_texturename = "l3.png";
+        sprite3->_meshname = "testplane.obj";
+        layer3->AddComponent(sprite3);
+        layer3->_transformation._position = glm::vec3(0,0,-1);
+        layer3->_transformation._scale = glm::vec3(7.8*6,3*6,1);
+
+        
+        _game.AddEntity(layer3);
+        _game.AddEntity(layer2);
+        _game.AddEntity(layer1);
+        _game.AddEntity(childtest1);
+
+
+        _game.Start();
+        TransformationMatrixStack::Push(_maincamera->_projection);
+        TransformationMatrixStack::Push(_maincamera->_view);
+        
+        _game._transformation._position = glm::vec3(0,0,0);
+        _game._transformation._scale = glm::vec3(2,2,2);
+    }
+    float testmovelight = 1;
+    void Game::Update(float elapsedtime)
+    {
+        // PL test
+        //--------------------
+        
+        PointLightComponent* pl = Resources::GetLightHandler()->GetPointLights()[0];
+        
+        if(pl->_transformation._position.x > 1)
+            testmovelight = -testmovelight;
+        if(pl->_transformation._position.x < -1)
+            testmovelight = -testmovelight;
+
+        Resources::GetLightHandler()->GetPointLights()[0]->_transformation._position.x += testmovelight * _maintimer->_dt;
+         
+        //end PL test
+        //---------------------
+        _maintimer->UpdateTimer(elapsedtime);
+        _game.Update(_maintimer);
+    }
+    void Game::Draw()
+    {
+        _game.Draw();
+    }
+
+}

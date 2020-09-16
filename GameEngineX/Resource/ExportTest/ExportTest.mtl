@@ -1,0 +1,15 @@
+newmtl 0
+map_Ka gray.png
+map_normal normalDefault.png
+newmtl 1
+map_Ka autumntree.png
+map_normal normalDefault.png
+newmtl 2
+map_Ka frog.png
+map_normal normalDefault.png
+actor 1 540 67.563 600 584.874 0
+actor 2 -480 423.667 600 112.667 0
+polygon 0 ExportTest0.obj
+polygon 0 ExportTest1.obj
+polygon 0 ExportTest2.obj
+polygon 0 ExportTest3.obj
